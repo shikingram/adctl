@@ -1,2 +1,2 @@
 # auto-compose
-similar as helm,  auto render ande deploy  applications via docker-compose
+similar as helm,  auto render and deploy  applications via docker-compose
