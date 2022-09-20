@@ -3,7 +3,7 @@ similar as helm,  auto render and deploy  applications via docker-compose
 
 
 # Usage
-`auto-composes` is a command line program to deploy  applications via docker-compose.
+`auto-compose` is a command line program to deploy  applications via docker-compose.
 
 It can be installed by running:
 
