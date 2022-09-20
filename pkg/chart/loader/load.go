@@ -1,10 +1,11 @@
 package loader
 
 import (
-	"auto-compose/pkg/chart"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
+
+	"github.com/shikingram/auto-compose/pkg/chart"
 
 	"github.com/pkg/errors"
 	"sigs.k8s.io/yaml"

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"auto-compose/pkg/cli/values"
+	"github.com/shikingram/auto-compose/pkg/cli/values"
 
 	"github.com/spf13/pflag"
 )

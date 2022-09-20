@@ -1,9 +1,10 @@
 package chartutil
 
 import (
-	"auto-compose/pkg/chart"
 	"io"
 	"io/ioutil"
+
+	"github.com/shikingram/auto-compose/pkg/chart"
 
 	"sigs.k8s.io/yaml"
 )

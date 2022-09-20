@@ -22,9 +22,10 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"auto-compose/pkg/action"
 	"fmt"
 	"os"
+
+	"github.com/shikingram/auto-compose/pkg/action"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

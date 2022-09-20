@@ -7,7 +7,7 @@ import (
 
 	"github.com/gobwas/glob"
 
-	"auto-compose/pkg/chart"
+	"github.com/shikingram/auto-compose/pkg/chart"
 )
 
 // files is a map of files in a chart that can be accessed from a template.

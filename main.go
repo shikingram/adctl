@@ -22,7 +22,7 @@ THE SOFTWARE.
 package main
 
 import (
-	"auto-compose/cmd"
+	"github.com/shikingram/auto-compose/cmd"
 )
 
 func main() {

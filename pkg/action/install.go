@@ -1,8 +1,6 @@
 package action
 
 import (
-	"auto-compose/pkg/chart"
-	"auto-compose/pkg/chartutil"
 	"context"
 	"fmt"
 	"os"
@@ -10,6 +8,9 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/shikingram/auto-compose/pkg/chart"
+	"github.com/shikingram/auto-compose/pkg/chartutil"
 
 	"github.com/pkg/errors"
 )

@@ -1,10 +1,11 @@
 package action
 
 import (
-	"auto-compose/pkg/chart"
-	"auto-compose/pkg/chartutil"
-	"auto-compose/pkg/engine"
 	"path/filepath"
+
+	"github.com/shikingram/auto-compose/pkg/chart"
+	"github.com/shikingram/auto-compose/pkg/chartutil"
+	"github.com/shikingram/auto-compose/pkg/engine"
 )
 
 type Configuration struct {

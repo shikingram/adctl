@@ -1,8 +1,9 @@
 package values
 
 import (
-	"auto-compose/pkg/chartutil"
 	"io/ioutil"
+
+	"github.com/shikingram/auto-compose/pkg/chartutil"
 
 	"github.com/pkg/errors"
 	"sigs.k8s.io/yaml"

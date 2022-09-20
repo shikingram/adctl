@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"auto-compose/pkg/chart"
 	"fmt"
 	"path"
 	"regexp"
@@ -9,7 +8,9 @@ import (
 	"strings"
 	"text/template"
 
-	"auto-compose/pkg/chartutil"
+	"github.com/shikingram/auto-compose/pkg/chart"
+
+	"github.com/shikingram/auto-compose/pkg/chartutil"
 
 	"github.com/pkg/errors"
 )

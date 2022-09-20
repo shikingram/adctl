@@ -1,9 +1,10 @@
 package chartutil
 
 import (
-	"auto-compose/pkg/chart"
 	"fmt"
 	"log"
+
+	"github.com/shikingram/auto-compose/pkg/chart"
 
 	"github.com/mitchellh/copystructure"
 )

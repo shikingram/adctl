@@ -22,16 +22,17 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"auto-compose/pkg/action"
 	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"auto-compose/pkg/cli/values"
+	"github.com/shikingram/auto-compose/pkg/action"
 
-	"auto-compose/pkg/chart/loader"
+	"github.com/shikingram/auto-compose/pkg/cli/values"
+
+	"github.com/shikingram/auto-compose/pkg/chart/loader"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
