@@ -10,7 +10,7 @@ import (
 // start docker-compose
 func Start(file string) error {
 	pName := file[strings.LastIndex(file, "/")+8 : strings.LastIndex(file, ".")]
-	return run("bash", fmt.Sprintf("docker-compose -f %s up -d -p %s --remove-orphans", file, pName))
+	return run("bash", fmt.Sprintf("docker-compose -f %s -p %s up -d --remove-orphans", file, pName))
 }
 
 // stop docker-compose

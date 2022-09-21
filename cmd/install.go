@@ -29,10 +29,8 @@ import (
 	"syscall"
 
 	"github.com/shikingram/auto-compose/pkg/action"
-
-	"github.com/shikingram/auto-compose/pkg/cli/values"
-
 	"github.com/shikingram/auto-compose/pkg/chart/loader"
+	"github.com/shikingram/auto-compose/pkg/cli/values"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
