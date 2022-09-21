@@ -16,7 +16,7 @@ func Install(name string) error {
 	return InstallWithContext(ctx, name)
 }
 
-var nameRegex = regexp.MustCompile(`^\d{2}-(app|job)-[a-z]+(.yaml)$`)
+var nameRegex = regexp.MustCompile(`^\d+-(app|job)-.*$`)
 
 func InstallWithContext(ctx context.Context, name string) error {
 	files, err := loader.LoadDir("instance")
