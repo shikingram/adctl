@@ -35,9 +35,9 @@ var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "acc",
+	Use:   "auto-compose",
 	Short: "The docker-compose package manager",
-	Long: `acc is a CLI for managing applications using docker-compose.
+	Long: `auto-compose is a CLI for managing applications using docker-compose.
 	It can render user-defined values.yaml parameters into the docker-compose.yaml.gtpl template.
 	Then generate the actual docker-compose yaml deployment file.
 
@@ -53,7 +53,7 @@ var rootCmd = &cobra.Command{
 		│           └── config.gtpl
 		└── values.yaml
 	
-	than you can use "acc install example" to deployed this application.
+	than you can use "auto-compose install example" to deployed this application.
 
 	It will populate the values in "values.yaml" into the ".gtpl" file template and deploy it in docker.
 `,

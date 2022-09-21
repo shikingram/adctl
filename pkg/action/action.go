@@ -6,6 +6,7 @@ import (
 	"github.com/shikingram/auto-compose/pkg/chart"
 	"github.com/shikingram/auto-compose/pkg/chartutil"
 	"github.com/shikingram/auto-compose/pkg/engine"
+	"sigs.k8s.io/yaml"
 )
 
 type Configuration struct {
@@ -18,6 +19,13 @@ func (cfg *Configuration) renderResources(ch *chart.Chart, values chartutil.Valu
 	if err != nil {
 		return err
 	}
+
+	// add coalesced values.yaml to target directory
+	content, err := yaml.Marshal(values["Values"])
+	if err != nil {
+		return err
+	}
+	files[filepath.Join(ch.ChartPath(), "values.yaml")] = string(content)
 
 	fileWritten := make(map[string]bool)
 	for name, content := range files {

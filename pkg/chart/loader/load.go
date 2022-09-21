@@ -16,7 +16,7 @@ type BufferedFile struct {
 	Data []byte
 }
 
-func loadDir(path string) ([]*BufferedFile, error) {
+func LoadDir(path string) ([]*BufferedFile, error) {
 	var files []*BufferedFile
 
 	fis, err := ioutil.ReadDir(path)
@@ -26,7 +26,7 @@ func loadDir(path string) ([]*BufferedFile, error) {
 	for _, fi := range fis {
 		fullname := filepath.Join(path, fi.Name())
 		if fi.IsDir() {
-			temps, err := loadDir(fullname)
+			temps, err := LoadDir(fullname)
 			if err != nil {
 				return files, err
 			}
@@ -49,7 +49,7 @@ func LoadChart(path string) (*chart.Chart, error) {
 	if path == "" {
 		path = "chart"
 	}
-	files, err := loadDir(path)
+	files, err := LoadDir(path)
 	if err != nil {
 		return c, err
 	}
@@ -72,7 +72,7 @@ func LoadChart(path string) (*chart.Chart, error) {
 			if err := yaml.Unmarshal(f.Data, &c.Values); err != nil {
 				return c, errors.Wrap(err, "cannot load values.yaml")
 			}
-		case strings.Contains(f.Name, ".gtpl"):
+		case strings.Contains(f.Name, "templates/"):
 			c.Templates = append(c.Templates, &chart.File{Name: f.Name, Data: f.Data})
 		default:
 			c.Files = append(c.Files, &chart.File{Name: f.Name, Data: f.Data})

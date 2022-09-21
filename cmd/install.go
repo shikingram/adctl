@@ -49,11 +49,8 @@ func newInstallCmd(cfg *action.Configuration) *cobra.Command {
 		Use:   "install",
 		Short: "install application",
 		Long:  installDesc,
-		Run: func(cmd *cobra.Command, args []string) {
-			err := runInstall(args, client, valueOpts)
-			if err != nil {
-				warning("%+v", err)
-			}
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runInstall(args, client, valueOpts)
 		},
 	}
 
@@ -64,8 +61,8 @@ func newInstallCmd(cfg *action.Configuration) *cobra.Command {
 
 func addInstallFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Install, valueOpts *values.Options) {
 	f.BoolVar(&client.DryRun, "dry-run", false, "simulate an install")
-	f.BoolVarP(&client.GenerateName, "generate-name", "g", false, "generate the name (and omit the NAME parameter)")
-	f.BoolVar(&client.UseReleaseName, "release-name", false, "use release name in the output-dir path.")
+	// f.BoolVarP(&client.GenerateName, "generate-name", "g", false, "generate the name (and omit the NAME parameter)")
+	// f.BoolVar(&client.UseReleaseName, "release-name", false, "use release name in the output-dir path.")
 	addValueOptionsFlags(f, valueOpts)
 }
 

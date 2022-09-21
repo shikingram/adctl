@@ -11,6 +11,7 @@ import (
 
 	"github.com/shikingram/auto-compose/pkg/chart"
 	"github.com/shikingram/auto-compose/pkg/chartutil"
+	"github.com/shikingram/auto-compose/pkg/deploy"
 
 	"github.com/pkg/errors"
 )
@@ -83,7 +84,7 @@ func writeToFile(dir string, sourceName string, data string, append bool) error 
 
 	defer f.Close()
 
-	_, err = f.WriteString(fmt.Sprintf("---\n# Source: %s\n%s\n", sourceName, data))
+	_, err = f.WriteString(data)
 
 	if err != nil {
 		return err
@@ -124,5 +125,14 @@ func (i *Install) RunWithContext(ctx context.Context, ch *chart.Chart, vals char
 	if err != nil {
 		return err
 	}
-	return i.cfg.renderResources(ch, valuesToRender, i.ReleaseName)
+	err = i.cfg.renderResources(ch, valuesToRender, i.ReleaseName)
+	if err != nil {
+		return err
+	}
+
+	if i.DryRun {
+		return nil
+	}
+
+	return deploy.InstallWithContext(ctx, i.ReleaseName)
 }

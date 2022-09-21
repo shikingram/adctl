@@ -1,4 +1,4 @@
-BIN_FILE=acc
+BIN_FILE=auto-compose
 
 .PHONY: test run build
 all: check build
@@ -6,7 +6,8 @@ all: check build
 build: 
 	@go build -o "${BIN_FILE}" 
 
-run:
+
+run: build
 	./"${BIN_FILE}"
 
 check:
