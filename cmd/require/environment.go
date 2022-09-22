@@ -7,7 +7,7 @@ import (
 )
 
 func Environment() error {
-	countNum, err := script.Exec("where docker && where docker-compose").Match("not found").CountLines()
+	countNum, err := script.Exec("which docker && which docker-compose").Match("not found").CountLines()
 	if err != nil {
 		return err
 	}
