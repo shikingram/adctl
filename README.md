@@ -41,15 +41,15 @@ The chart package should have the following structure:
 example-chart
 ├── Chart.yaml
 ├── templates
-│   ├── 01-app-mysql.yaml.gtpl
-│   ├── 02-job-init-databases.yaml.gtpl
-│   ├── 03-app-register-center.yaml.gtpl
-│   ├── NOTES.txt
-│   └── config
-│       ├── init-databases
-│       │   └── config.env.gtpl
-│       └── mysql
-│           └── config.gtpl
+│   ├── 01-app-mysql.yaml.gtpl
+│   ├── 02-job-init-databases.yaml.gtpl
+│   ├── 03-app-register-center.yaml.gtpl
+│   ├── NOTES.txt
+│   └── config
+│       ├── init-databases
+│       │   └── config.env.gtpl
+│       └── mysql
+│           └── config.gtpl
 └── values.yaml
 ```
 After executing `adctl install`, we will generate an instance in the current directory and start it in docker vi docker-compose
@@ -62,4 +62,9 @@ When we modify some configurations, we can execute this command for `up-to-date`
 ### adctl uninstall
 This command takes a release name and uninstalls the release.
 
-for more information,Please execute `adctl --help` to view details 
+However, in order to protect data from being lost, the locally generated directory `instance`will not be deleted. If you really need to delete it, you can use flag `--clean-instance`
+
+## More Informations
+
+for more informations, try to use `adctl --help` to view details 
+
