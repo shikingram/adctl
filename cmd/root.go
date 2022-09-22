@@ -44,16 +44,20 @@ var rootCmd = &cobra.Command{
 	An application template like follows:
 	
 	example-chart
-	└── chart
-		├── Chart.yaml
-		├── template
-		│   ├── mysql.yaml.gtpl
-		│   └── config
-		│       └── mysql
-		│           └── config.gtpl
-		└── values.yaml
+	├── Chart.yaml
+	├── templates
+	│   ├── 01-app-mysql.yaml.gtpl
+	│   ├── 02-job-init-databases.yaml.gtpl
+	│   ├── 03-app-register-center.yaml.gtpl
+	│   ├── NOTES.txt
+	│   └── config
+	│       ├── init-databases
+	│       │   └── config.env.gtpl
+	│       └── mysql
+	│           └── config.gtpl
+	└── values.yaml
 	
-	than you can use "adctl install example" to deployed this application.
+	than you can use "adctl install example example-chart" to deployed this application.
 
 	It will populate the values in "values.yaml" into the ".gtpl" file template and deploy it in docker.
 `,

@@ -8,7 +8,7 @@ import (
 	"github.com/shikingram/adctl/pkg/chart/loader"
 )
 
-func UnInstall(name string) error {
+func UnInstall(name string, remove bool) error {
 	rootpath := filepath.Join("instance", name)
 	files, err := loader.LoadDir(rootpath)
 	if err != nil {
@@ -23,6 +23,9 @@ func UnInstall(name string) error {
 		}
 	}
 
-	return os.RemoveAll(rootpath)
+	if remove {
+		return os.RemoveAll(rootpath)
+	}
+	return nil
 
 }

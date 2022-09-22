@@ -45,7 +45,7 @@ func newInstallCmd(cfg *action.Configuration) *cobra.Command {
 
 	// cmd represents the install command
 	var cmd = &cobra.Command{
-		Use:   "install",
+		Use:   "install [NAME] [CHART]",
 		Short: "install application",
 		Long:  installDesc,
 		Args:  require.MinimumNArgs(1),
@@ -64,6 +64,7 @@ func newInstallCmd(cfg *action.Configuration) *cobra.Command {
 
 func addInstallFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Install, valueOpts *values.Options) {
 	f.BoolVar(&client.DryRun, "dry-run", false, "simulate an install")
+	f.BoolVar(&client.Force, "force", false, "force install")
 	// f.BoolVarP(&client.GenerateName, "generate-name", "g", false, "generate the name (and omit the NAME parameter)")
 	// f.BoolVar(&client.UseReleaseName, "release-name", false, "use release name in the output-dir path.")
 	addValueOptionsFlags(f, valueOpts)
@@ -82,7 +83,7 @@ func runInstall(args []string, client *action.Install, valueOpts *values.Options
 	}
 
 	// validate name
-	if client.ValidateName(name) && !client.DryRun {
+	if client.ValidateName(name) && !client.DryRun && !client.Force {
 		return fmt.Errorf("chart %s has already installed", name)
 	}
 

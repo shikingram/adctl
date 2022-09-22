@@ -35,7 +35,7 @@ func newUnInstallCmd(cfg *action.Configuration) *cobra.Command {
 	client := action.NewUnInstall(cfg)
 	// cmd represents the uninstall command
 	var cmd = &cobra.Command{
-		Use:        "uninstall",
+		Use:        "uninstall [NAME]",
 		Short:      "uninstall application",
 		Aliases:    []string{"del", "delete", "un"},
 		SuggestFor: []string{"remove", "rm"},
@@ -58,8 +58,8 @@ func newUnInstallCmd(cfg *action.Configuration) *cobra.Command {
 		},
 	}
 
-	// f := cmd.Flags()
-	// f.BoolVar(&client.DryRun, "dry-run", false, "simulate a uninstall")
+	f := cmd.Flags()
+	f.BoolVar(&client.CleanInstance, "clean-instance", false, "remove all lacal files in instance directory")
 	// f.DurationVar(&client.Timeout, "timeout", 300*time.Second, "time to wait for any individual Kubernetes operation (like Jobs for hooks)")
 
 	return cmd

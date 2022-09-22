@@ -45,7 +45,7 @@ func newUpgradeCmd(cfg *action.Configuration) *cobra.Command {
 
 	// upgradeCmd represents the upgrade command
 	var cmd = &cobra.Command{
-		Use:   "upgrade",
+		Use:   "upgrade [NAME] [CHART]",
 		Short: "upgrade application",
 		Long:  upgradeDesc,
 		Args:  require.ExactArgs(2),

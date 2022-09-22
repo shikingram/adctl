@@ -9,9 +9,10 @@ import (
 type UnInstall struct {
 	cfg *Configuration
 
-	ReleaseName string
-	DryRun      bool
-	Timeout     time.Duration
+	ReleaseName   string
+	DryRun        bool
+	CleanInstance bool
+	Timeout       time.Duration
 }
 
 func NewUnInstall(cfg *Configuration) *UnInstall {
@@ -19,5 +20,5 @@ func NewUnInstall(cfg *Configuration) *UnInstall {
 }
 
 func (i *UnInstall) Run(name string) error {
-	return deploy.UnInstall(name)
+	return deploy.UnInstall(name, i.CleanInstance)
 }

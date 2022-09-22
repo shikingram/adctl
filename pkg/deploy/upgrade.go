@@ -14,7 +14,7 @@ import (
 
 func Upgrade(name string) error {
 	ctx := context.Background()
-	return UpgradeWithContext(ctx, name)
+	return InstallWithContext(ctx, name)
 }
 
 var upgradeRegex = regexp.MustCompile(`^\d+-app-.*$`)

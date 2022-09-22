@@ -25,6 +25,7 @@ type Install struct {
 	GenerateName   bool
 	NameTemplate   string
 	DryRun         bool
+	Force          bool
 	UseReleaseName bool
 }
 

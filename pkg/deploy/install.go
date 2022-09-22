@@ -19,6 +19,8 @@ func Install(name string) error {
 
 var nameRegex = regexp.MustCompile(`^\d+-(app|job)-.*$`)
 
+const notesFileSuffix = "NOTES.txt"
+
 func InstallWithContext(ctx context.Context, name string) error {
 	files, err := loader.LoadDir(filepath.Join("instance", name))
 	if err != nil {
@@ -46,6 +48,16 @@ func InstallWithContext(ctx context.Context, name string) error {
 		}
 	}
 
+	printNotes(files)
+
 	return nil
 
+}
+
+func printNotes(fis []*loader.BufferedFile) {
+	for _, fi := range fis {
+		if strings.Contains(fi.Name, notesFileSuffix) {
+			fmt.Printf("\n %s ==> \n %s \n", notesFileSuffix, string(fi.Data))
+		}
+	}
 }
