@@ -1,9 +1,10 @@
 # Overview
-similar as helm,  auto render and deploy  applications via docker-compose
+
+`auto deploy ctl` similar as helm,  auto render and deploy  applications via docker-compose
 
 
 # Usage
-`auto-compose` is a command line program to deploy  applications via docker-compose.
+`adctl` is a command line program to deploy  applications via docker-compose.
 
 It can be installed by running:
 
