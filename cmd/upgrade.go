@@ -29,6 +29,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/shikingram/adctl/cmd/require"
 	"github.com/shikingram/adctl/pkg/action"
 	"github.com/shikingram/adctl/pkg/chart/loader"
 	"github.com/shikingram/adctl/pkg/cli/values"
@@ -47,6 +48,10 @@ func newUpgradeCmd(cfg *action.Configuration) *cobra.Command {
 		Use:   "upgrade",
 		Short: "upgrade application",
 		Long:  upgradeDesc,
+		Args:  require.ExactArgs(2),
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			return require.Environment()
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runUpgrade(args, client, valueOpts)
 		},

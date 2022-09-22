@@ -36,11 +36,14 @@ func newUnInstallCmd(cfg *action.Configuration) *cobra.Command {
 	// cmd represents the uninstall command
 	var cmd = &cobra.Command{
 		Use:        "uninstall",
-		Short:      " uninstall application",
+		Short:      "uninstall application",
 		Aliases:    []string{"del", "delete", "un"},
 		SuggestFor: []string{"remove", "rm"},
 		Args:       require.MinimumNArgs(1),
 		Long:       unInstallDesc,
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			return require.Environment()
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			for i := 0; i < len(args); i++ {
 

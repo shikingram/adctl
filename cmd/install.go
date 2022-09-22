@@ -28,6 +28,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/shikingram/adctl/cmd/require"
 	"github.com/shikingram/adctl/pkg/action"
 	"github.com/shikingram/adctl/pkg/chart/loader"
 	"github.com/shikingram/adctl/pkg/cli/values"
@@ -47,6 +48,10 @@ func newInstallCmd(cfg *action.Configuration) *cobra.Command {
 		Use:   "install",
 		Short: "install application",
 		Long:  installDesc,
+		Args:  require.MinimumNArgs(1),
+		PreRunE: func(cmd *cobra.Command, args []string) error {
+			return require.Environment()
+		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return runInstall(args, client, valueOpts)
 		},
