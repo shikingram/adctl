@@ -46,9 +46,6 @@ func LoadDir(path string) ([]*BufferedFile, error) {
 func LoadChart(path string) (*chart.Chart, error) {
 	c := new(chart.Chart)
 
-	if path == "" {
-		path = "chart"
-	}
 	files, err := LoadDir(path)
 	if err != nil {
 		return c, err

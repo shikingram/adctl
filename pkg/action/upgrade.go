@@ -19,20 +19,20 @@ func NewUpgrade(cfg *Configuration) *Upgrade {
 	return &Upgrade{cfg: cfg}
 }
 
-func (i *Upgrade) NameAndChart(args []string) (string, error) {
+func (i *Upgrade) NameAndChart(args []string) (string, string, error) {
 
-	if len(args) > 1 {
-		return args[0], errors.Errorf("expected at most one arguments, unexpected arguments: %v", strings.Join(args[1:], ", "))
+	if len(args) > 2 {
+		return args[0], args[1], errors.Errorf("expected at most two arguments, unexpected arguments: %v", strings.Join(args[1:], ", "))
 	}
 
-	if len(args) == 1 {
-		return args[0], nil
+	if len(args) == 2 {
+		return args[0], args[1], nil
 	}
 
 	if i.ReleaseName != "" {
-		return i.ReleaseName, nil
+		return i.ReleaseName, args[0], nil
 	}
-	return args[0], errors.New("must specify name")
+	return "", "", errors.New("must specify name")
 }
 
 func (i *Upgrade) Run(ch *chart.Chart, vals chartutil.Values) error {

@@ -1,7 +1,9 @@
 package action
 
 import (
+	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/shikingram/adctl/pkg/chart"
 	"github.com/shikingram/adctl/pkg/chartutil"
@@ -11,6 +13,8 @@ import (
 
 type Configuration struct {
 }
+
+const notesFileSuffix = "NOTES.txt"
 
 func (cfg *Configuration) renderResources(ch *chart.Chart, values chartutil.Values, releaseName string) error {
 	files, err := engine.Render(ch, values)
@@ -27,6 +31,12 @@ func (cfg *Configuration) renderResources(ch *chart.Chart, values chartutil.Valu
 
 	fileWritten := make(map[string]bool)
 	for name, content := range files {
+
+		if strings.Contains(name, notesFileSuffix) {
+			fmt.Printf("%s \n", content)
+			continue
+		}
+
 		newDir := filepath.Join("instance", releaseName)
 		err = writeToFile(newDir, name, content, fileWritten[name])
 		if err != nil {

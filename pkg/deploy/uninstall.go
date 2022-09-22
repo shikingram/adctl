@@ -9,8 +9,8 @@ import (
 )
 
 func UnInstall(name string) error {
-	rootPath := filepath.Join("instance", name)
-	files, err := loader.LoadDir(rootPath)
+	rootpath := filepath.Join("instance", name)
+	files, err := loader.LoadDir(rootpath)
 	if err != nil {
 		return err
 	}
@@ -23,6 +23,6 @@ func UnInstall(name string) error {
 		}
 	}
 
-	return os.RemoveAll(rootPath)
+	return os.RemoveAll(rootpath)
 
 }

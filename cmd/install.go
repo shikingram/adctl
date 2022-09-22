@@ -65,7 +65,7 @@ func addInstallFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Instal
 }
 
 func runInstall(args []string, client *action.Install, valueOpts *values.Options) error {
-	name, err := client.Name(args)
+	name, cp, err := client.NameAndChart(args)
 	if err != nil {
 		return err
 	}
@@ -77,11 +77,11 @@ func runInstall(args []string, client *action.Install, valueOpts *values.Options
 	}
 
 	// validate name
-	if client.ValidateName(name) {
+	if client.ValidateName(name) && !client.DryRun {
 		return fmt.Errorf("chart %s has already installed", name)
 	}
 
-	charts, err := loader.LoadChart("chart")
+	charts, err := loader.LoadChart(cp)
 	if err != nil {
 		return err
 	}

@@ -32,7 +32,7 @@ func NewInstall(cfg *Configuration) *Install {
 	return &Install{cfg: cfg}
 }
 
-func (i *Install) Name(args []string) (string, error) {
+func (i *Install) NameAndChart(args []string) (string, string, error) {
 	flagsNotSet := func() error {
 		if i.GenerateName {
 			return errors.New("cannot set --generate-name and also specify a name")
@@ -40,20 +40,20 @@ func (i *Install) Name(args []string) (string, error) {
 		return nil
 	}
 
-	if len(args) > 1 {
-		return args[0], errors.Errorf("expected at most one arguments, unexpected arguments: %v", strings.Join(args[1:], ", "))
+	if len(args) > 2 {
+		return args[0], args[1], errors.Errorf("expected at most two arguments, unexpected arguments: %v", strings.Join(args[2:], ", "))
 	}
 
-	if len(args) == 1 {
-		return args[0], flagsNotSet()
+	if len(args) == 2 {
+		return args[0], args[1], flagsNotSet()
 	}
 
 	if i.ReleaseName != "" {
-		return i.ReleaseName, nil
+		return i.ReleaseName, args[0], nil
 	}
 
 	if !i.GenerateName {
-		return "", errors.New("must either provide a name or specify --generate-name")
+		return "", args[0], errors.New("must either provide a name or specify --generate-name")
 	}
 
 	base := filepath.Base(args[0])
@@ -65,7 +65,7 @@ func (i *Install) Name(args []string) (string, error) {
 		base = base[0:idx]
 	}
 
-	return fmt.Sprintf("%s-%d", base, time.Now().Unix()), nil
+	return fmt.Sprintf("%s-%d", base, time.Now().Unix()), args[0], nil
 }
 
 func writeToFile(dir string, sourceName string, data string, append bool) error {

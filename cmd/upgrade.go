@@ -61,7 +61,7 @@ func addUpgradeFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Upgrad
 }
 
 func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options) error {
-	name, err := client.NameAndChart(args)
+	name, cp, err := client.NameAndChart(args)
 	if err != nil {
 		return err
 	}
@@ -77,7 +77,7 @@ func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options
 		return err
 	}
 
-	charts, err := loader.LoadChart("chart")
+	charts, err := loader.LoadChart(cp)
 	if err != nil {
 		return err
 	}

@@ -123,7 +123,9 @@ func (e Engine) renderWithReferences(tpls, referenceTpls map[string]renderable) 
 		if err := t.ExecuteTemplate(&buf, filename, vals); err != nil {
 			return map[string]string{}, cleanupExecError(filename, err)
 		}
-		filename = filename[:strings.LastIndex(filename, ".gtpl")]
+		if index := strings.LastIndex(filename, ".gtpl"); index > 0 {
+			filename = filename[:index]
+		}
 		rendered[filename] = strings.ReplaceAll(buf.String(), "<no value>", "")
 	}
 

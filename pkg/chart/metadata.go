@@ -7,6 +7,8 @@ type Metadata struct {
 	Version string `json:"version,omitempty"`
 	// A one-sentence description of the chart
 	Description string `json:"description,omitempty"`
+
+	AppVersion string `json:"appversion,omitempty"`
 }
 
 func (md *Metadata) Validate() error {
