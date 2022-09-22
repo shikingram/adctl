@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/shikingram/auto-compose/pkg/chart"
+	"github.com/shikingram/adctl/pkg/chart"
 
 	"github.com/mitchellh/copystructure"
 )

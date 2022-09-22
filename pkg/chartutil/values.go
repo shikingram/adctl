@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/shikingram/auto-compose/pkg/chart"
+	"github.com/shikingram/adctl/pkg/chart"
 
 	"sigs.k8s.io/yaml"
 )
@@ -135,7 +135,7 @@ func ToRenderValues(chrt *chart.Chart, options ReleaseOptions, chrtVals map[stri
 		"Release": map[string]interface{}{
 			"Name":     options.Name,
 			"Revision": options.Revision,
-			"Service":  "auto-compose",
+			"Service":  "adctl",
 		},
 	}
 

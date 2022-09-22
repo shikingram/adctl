@@ -3,9 +3,9 @@ package action
 import (
 	"path/filepath"
 
-	"github.com/shikingram/auto-compose/pkg/chart"
-	"github.com/shikingram/auto-compose/pkg/chartutil"
-	"github.com/shikingram/auto-compose/pkg/engine"
+	"github.com/shikingram/adctl/pkg/chart"
+	"github.com/shikingram/adctl/pkg/chartutil"
+	"github.com/shikingram/adctl/pkg/engine"
 	"sigs.k8s.io/yaml"
 )
 

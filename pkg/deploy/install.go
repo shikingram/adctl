@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/shikingram/auto-compose/pkg/chart/loader"
+	"github.com/shikingram/adctl/pkg/chart/loader"
 )
 
 func Install(name string) error {

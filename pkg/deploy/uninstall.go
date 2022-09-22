@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/shikingram/auto-compose/pkg/chart/loader"
+	"github.com/shikingram/adctl/pkg/chart/loader"
 )
 
 func UnInstall(name string) error {

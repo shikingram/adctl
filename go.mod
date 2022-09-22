@@ -1,4 +1,4 @@
-module github.com/shikingram/auto-compose
+module github.com/shikingram/adctl
 
 go 1.19
 

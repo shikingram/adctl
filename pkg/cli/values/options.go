@@ -3,7 +3,7 @@ package values
 import (
 	"io/ioutil"
 
-	"github.com/shikingram/auto-compose/pkg/chartutil"
+	"github.com/shikingram/adctl/pkg/chartutil"
 
 	"github.com/pkg/errors"
 	"sigs.k8s.io/yaml"

@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/shikingram/auto-compose/pkg/chart"
+	"github.com/shikingram/adctl/pkg/chart"
 
 	"github.com/pkg/errors"
 	"sigs.k8s.io/yaml"
@@ -42,7 +42,7 @@ func LoadDir(path string) ([]*BufferedFile, error) {
 	return files, nil
 }
 
-//LoadChart load chart from local path
+// LoadChart load chart from local path
 func LoadChart(path string) (*chart.Chart, error) {
 	c := new(chart.Chart)
 

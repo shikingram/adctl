@@ -24,8 +24,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/shikingram/auto-compose/cmd/require"
-	"github.com/shikingram/auto-compose/pkg/action"
+	"github.com/shikingram/adctl/cmd/require"
+	"github.com/shikingram/adctl/pkg/action"
 	"github.com/spf13/cobra"
 )
 

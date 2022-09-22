@@ -1,4 +1,4 @@
-BIN_FILE=auto-compose
+BIN_FILE=adctl
 
 .PHONY: test run build
 all: check build

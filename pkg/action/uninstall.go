@@ -3,7 +3,7 @@ package action
 import (
 	"time"
 
-	"github.com/shikingram/auto-compose/pkg/deploy"
+	"github.com/shikingram/adctl/pkg/deploy"
 )
 
 type UnInstall struct {

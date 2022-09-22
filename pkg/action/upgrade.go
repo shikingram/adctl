@@ -5,9 +5,9 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
-	"github.com/shikingram/auto-compose/pkg/chart"
-	"github.com/shikingram/auto-compose/pkg/chartutil"
-	"github.com/shikingram/auto-compose/pkg/deploy"
+	"github.com/shikingram/adctl/pkg/chart"
+	"github.com/shikingram/adctl/pkg/chartutil"
+	"github.com/shikingram/adctl/pkg/deploy"
 )
 
 type Upgrade struct {

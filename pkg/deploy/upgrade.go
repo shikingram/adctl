@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/shikingram/auto-compose/pkg/chart/loader"
+	"github.com/shikingram/adctl/pkg/chart/loader"
 )
 
 func Upgrade(name string) error {
