@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -19,15 +20,14 @@ func Install(name string) error {
 var nameRegex = regexp.MustCompile(`^\d+-(app|job)-.*$`)
 
 func InstallWithContext(ctx context.Context, name string) error {
-	files, err := loader.LoadDir("instance")
+	files, err := loader.LoadDir(filepath.Join("instance", name))
 	if err != nil {
 		return err
 	}
 
 	// TODO: validate
 
-	err = CreateNetWork(name)
-	if err != nil {
+	if err := CreateNetWork(name); err != nil {
 		return err
 	}
 
@@ -38,11 +38,7 @@ func InstallWithContext(ctx context.Context, name string) error {
 		default:
 			if nameRegex.MatchString(fi.Name[strings.LastIndex(fi.Name, string(os.PathSeparator))+1:]) {
 				fmt.Printf("match file: %s \n", fi.Name)
-				err = Start(fi.Name)
-				if err != nil {
-					fmt.Fprintf(os.Stderr, "start docker container failed :%s", err.Error())
-					continue
-				}
+				return Start(fi.Name)
 			}
 		}
 	}
