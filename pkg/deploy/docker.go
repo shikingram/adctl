@@ -12,7 +12,8 @@ func CreateNetWork(name string) error {
 		return err
 	}
 	if numErrors > 0 {
-		return run(fmt.Sprintf("docker network create %s ", name))
+		_, err := script.Exec(fmt.Sprintf("docker network create %s ", name)).Stdout()
+		return err
 	} else {
 		fmt.Printf("network %s is already exists \n", name)
 	}

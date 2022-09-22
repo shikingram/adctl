@@ -22,36 +22,78 @@ THE SOFTWARE.
 package cmd
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
+	"github.com/shikingram/auto-compose/pkg/action"
+	"github.com/shikingram/auto-compose/pkg/chart/loader"
+	"github.com/shikingram/auto-compose/pkg/cli/values"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
-// upgradeCmd represents the upgrade command
-var upgradeCmd = &cobra.Command{
-	Use:   "upgrade",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+const upgradeDesc = "This command upgrades a release to a new version of a chart"
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("upgrade called")
-	},
+func newUpgradeCmd(cfg *action.Configuration) *cobra.Command {
+	client := action.NewUpgrade(cfg)
+	valueOpts := &values.Options{}
+
+	// upgradeCmd represents the upgrade command
+	var cmd = &cobra.Command{
+		Use:   "upgrade",
+		Short: "upgrade application",
+		Long:  upgradeDesc,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return runUpgrade(args, client, valueOpts)
+		},
+	}
+	addUpgradeFlags(cmd, cmd.Flags(), client, valueOpts)
+	return cmd
 }
 
-func init() {
-	rootCmd.AddCommand(upgradeCmd)
+func addUpgradeFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Upgrade, valueOpts *values.Options) {
+	// f.BoolVar(&client.UseReleaseName, "release-name", false, "use release name in the output-dir path.")
+	addValueOptionsFlags(f, valueOpts)
+}
 
-	// Here you will define your flags and configuration settings.
+func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options) error {
+	name, err := client.NameAndChart(args)
+	if err != nil {
+		return err
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// upgradeCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// validate name
+	if !client.ValidateName(name) {
+		return errors.New("must specify already deployed name")
+	}
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// upgradeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	client.ReleaseName = name
+	vals, err := valueOpts.MergeValues()
+	if err != nil {
+		return err
+	}
+
+	charts, err := loader.LoadChart("chart")
+	if err != nil {
+		return err
+	}
+
+	// Create context and prepare the handle of SIGTERM
+	ctx := context.Background()
+	ctx, cancel := context.WithCancel(ctx)
+
+	// Handle SIGTERM
+	cSignal := make(chan os.Signal, 1)
+	signal.Notify(cSignal, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		<-cSignal
+		fmt.Fprintf(os.Stdout, "Release %s has been cancelled.\n", args[0])
+		cancel()
+	}()
+
+	return client.RunWithContext(ctx, charts, vals)
 }

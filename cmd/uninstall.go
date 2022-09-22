@@ -24,34 +24,40 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/shikingram/auto-compose/cmd/require"
+	"github.com/shikingram/auto-compose/pkg/action"
 	"github.com/spf13/cobra"
 )
 
-// deleteCmd represents the delete command
-var deleteCmd = &cobra.Command{
-	Use:   "delete",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+const unInstallDesc = `This command takes a release name and uninstalls the release.`
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("delete called")
-	},
-}
+func newUnInstallCmd(cfg *action.Configuration) *cobra.Command {
+	client := action.NewUnInstall(cfg)
+	// cmd represents the uninstall command
+	var cmd = &cobra.Command{
+		Use:        "uninstall",
+		Short:      " uninstall application",
+		Aliases:    []string{"del", "delete", "un"},
+		SuggestFor: []string{"remove", "rm"},
+		Args:       require.MinimumNArgs(1),
+		Long:       unInstallDesc,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			for i := 0; i < len(args); i++ {
 
-func init() {
-	rootCmd.AddCommand(deleteCmd)
+				err := client.Run(args[i])
+				if err != nil {
+					return err
+				}
 
-	// Here you will define your flags and configuration settings.
+				fmt.Printf("release \"%s\" uninstalled\n", args[i])
+			}
+			return nil
+		},
+	}
 
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// deleteCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// f := cmd.Flags()
+	// f.BoolVar(&client.DryRun, "dry-run", false, "simulate a uninstall")
+	// f.DurationVar(&client.Timeout, "timeout", 300*time.Second, "time to wait for any individual Kubernetes operation (like Jobs for hooks)")
 
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// deleteCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	return cmd
 }

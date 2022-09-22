@@ -10,8 +10,6 @@ import (
 )
 
 type Configuration struct {
-	// specify path of application
-	PrivateCfg string
 }
 
 func (cfg *Configuration) renderResources(ch *chart.Chart, values chartutil.Values, releaseName string) error {

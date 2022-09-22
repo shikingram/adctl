@@ -38,7 +38,10 @@ func InstallWithContext(ctx context.Context, name string) error {
 		default:
 			if nameRegex.MatchString(fi.Name[strings.LastIndex(fi.Name, string(os.PathSeparator))+1:]) {
 				fmt.Printf("match file: %s \n", fi.Name)
-				return Start(fi.Name)
+				err := Start(fi.Name, name)
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}

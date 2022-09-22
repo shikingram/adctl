@@ -42,7 +42,7 @@ func newInstallCmd(cfg *action.Configuration) *cobra.Command {
 	client := action.NewInstall(cfg)
 	valueOpts := &values.Options{}
 
-	// installCmd represents the install command
+	// cmd represents the install command
 	var cmd = &cobra.Command{
 		Use:   "install",
 		Short: "install application",
@@ -76,7 +76,10 @@ func runInstall(args []string, client *action.Install, valueOpts *values.Options
 		return err
 	}
 
-	// TODO: validate
+	// validate name
+	if client.ValidateName(name) {
+		return fmt.Errorf("chart %s has already installed", name)
+	}
 
 	charts, err := loader.LoadChart("chart")
 	if err != nil {
@@ -88,7 +91,7 @@ func runInstall(args []string, client *action.Install, valueOpts *values.Options
 	ctx, cancel := context.WithCancel(ctx)
 
 	// Handle SIGTERM
-	cSignal := make(chan os.Signal)
+	cSignal := make(chan os.Signal, 1)
 	signal.Notify(cSignal, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-cSignal

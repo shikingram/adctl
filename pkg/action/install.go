@@ -25,7 +25,6 @@ type Install struct {
 	GenerateName   bool
 	NameTemplate   string
 	DryRun         bool
-	Namespace      string
 	UseReleaseName bool
 }
 
@@ -112,7 +111,9 @@ func ensureDirectoryForFile(file string) error {
 	return os.MkdirAll(baseDir, defaultDirectoryPermission)
 }
 
-func (i *Install) Run() {
+func (i *Install) Run(ch *chart.Chart, vals chartutil.Values) error {
+	ctx := context.Background()
+	return i.RunWithContext(ctx, ch, vals)
 }
 
 func (i *Install) RunWithContext(ctx context.Context, ch *chart.Chart, vals chartutil.Values) error {
@@ -135,4 +136,9 @@ func (i *Install) RunWithContext(ctx context.Context, ch *chart.Chart, vals char
 	}
 
 	return deploy.InstallWithContext(ctx, i.ReleaseName)
+}
+
+func (i *Install) ValidateName(name string) bool {
+	num, err := deploy.CheckReleaseDeploy(name)
+	return err == nil && num > 0
 }
