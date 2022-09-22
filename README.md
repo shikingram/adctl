@@ -9,5 +9,5 @@
 It can be installed by running:
 
 ```
-go install github.com/shikingram/auto-compose@latest
+go install github.com/shikingram/adctl@latest
 ```
