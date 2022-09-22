@@ -1,7 +1,7 @@
 # ADCTL
 ## Overview
 
-`auto deploy ctl` similar as helm, Adctl is a tool for managing Charts,Charts are package of pre-configured docker-compose yaml resource,
+`auto deploy ctl` similar as helm, Adctl is a tool for managing Charts,Charts are package of pre-configured docker-compose yaml resource
 
 To Use Adctl:
 
