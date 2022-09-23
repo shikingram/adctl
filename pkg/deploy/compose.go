@@ -8,6 +8,9 @@ import (
 	"github.com/bitfield/script"
 )
 
+const ps = `docker ps --filter "label=com.docker.compose.project" -q`
+const inspect = `xargs docker inspect --format='{{index .Config.Labels "com.docker.compose.project"}}'`
+
 // start docker-compose
 func Start(file, name string) error {
 	basefile := filepath.Base(file)
@@ -41,19 +44,32 @@ func Restart(file, name string) error {
 }
 
 func CheckReleaseDeploy(name string) (int, error) {
-	return script.Exec(`docker ps --filter "label=com.docker.compose.project" -q`).
-		Exec(`xargs docker inspect --format='{{index .Config.Labels "com.docker.compose.project"}}'`).
-		Exec(`sort`).
-		Exec(`uniq`).
-		Match(name).
-		CountLines()
+
+	if l, err := script.Exec(ps).CountLines(); err == nil && l > 0 {
+		return script.Exec(ps).
+			Exec(inspect).
+			Exec(`sort`).
+			Exec(`uniq`).
+			Match(name).
+			CountLines()
+	}
+
+	return 0, nil
+
 }
 
 func ListRelease() error {
-	_, err := script.Exec(`docker ps --filter "label=com.docker.compose.project" -q`).
-		Exec(`xargs docker inspect --format='{{index .Config.Labels "com.docker.compose.project"}}'`).
-		Exec(`sort`).
-		Exec(`uniq`).
-		Stdout()
-	return err
+
+	if l, err := script.Exec(ps).CountLines(); err == nil && l > 0 {
+		_, e := script.Exec(ps).
+			Exec(inspect).
+			Exec(`sort`).
+			Exec(`uniq`).
+			Stdout()
+		if e != nil {
+			return e
+		}
+	}
+
+	return nil
 }

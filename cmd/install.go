@@ -66,7 +66,6 @@ func addInstallFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Instal
 	f.BoolVar(&client.DryRun, "dry-run", false, "simulate an install")
 	f.BoolVar(&client.Force, "force", false, "force install")
 	// f.BoolVarP(&client.GenerateName, "generate-name", "g", false, "generate the name (and omit the NAME parameter)")
-	// f.BoolVar(&client.UseReleaseName, "release-name", false, "use release name in the output-dir path.")
 	addValueOptionsFlags(f, valueOpts)
 }
 
