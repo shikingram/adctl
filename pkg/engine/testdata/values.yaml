@@ -1,0 +1,3 @@
+storage:
+    mysql_storage: ./storage/app/mysql
+    mysql_config: ./config/mysql/config-file.cnf

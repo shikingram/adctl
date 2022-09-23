@@ -1,0 +1,2 @@
+mysql_config: {{ .storage.mysql_config }}
+mysql_storage: {{ .storage.mysql_storage }}

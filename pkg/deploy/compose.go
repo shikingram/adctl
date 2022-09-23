@@ -16,14 +16,20 @@ func Start(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
 	pname = "ad-" + name + "-" + pname
-	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p %s up -d --remove-orphans", file, pname)).Stdout()
+	cmd := fmt.Sprintf("docker-compose -f %s -p %s up -d --remove-orphans", file, pname)
+	return exec(cmd)
+}
+
+func exec(cmd string) error {
+	fmt.Printf("# exec cmd: %s \n", cmd)
+	_, err := script.Exec(cmd).Stdout()
 	return err
 }
 
 // stop docker-compose
 func Stop(file string) error {
-	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s stop -t 20", file)).Stdout()
-	return err
+	cmd := fmt.Sprintf("docker-compose -f %s stop -t 20", file)
+	return exec(cmd)
 }
 
 // stop and delete docker container
@@ -31,16 +37,16 @@ func Down(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
 	pname = "ad-" + name + "-" + pname
-	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p %s down --remove-orphans", file, pname)).Stdout()
-	return err
+	cmd := fmt.Sprintf("docker-compose -f %s -p %s down --remove-orphans", file, pname)
+	return exec(cmd)
 }
 
 func Restart(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
 	pname = "ad-" + name + "-" + pname
-	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p %s up -d --remove-orphans && docker-compose -f %s -p %s restart", file, pname, file, pname)).Stdout()
-	return err
+	cmd := fmt.Sprintf("docker-compose -f %s -p %s up -d --remove-orphans && docker-compose -f %s -p %s restart", file, pname, file, pname)
+	return exec(cmd)
 }
 
 func CheckReleaseDeploy(name string) (int, error) {

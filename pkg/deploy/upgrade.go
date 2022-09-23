@@ -52,6 +52,8 @@ func UpgradeWithContext(ctx context.Context, name string, force bool) error {
 		}
 	}
 
+	printNotes(files)
+
 	return nil
 
 }

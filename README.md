@@ -18,7 +18,7 @@ It can be installed by running:
 go install github.com/shikingram/adctl@latest
 ```
 
-## Usage
+## Example
 
 ### Precondition
 docker and docker-compose are required for this tool,The minimum required version is
@@ -29,6 +29,24 @@ Docker version 20.10.11, build dea9396
 $docker-compose --version  
 docker-compose version 1.29.2, build 5becea4c
 ```
+
+clone adctl to local:
+
+```
+git clone https://github.com/shikingram/adctl.git
+```
+install:
+
+```
+adctl install -f adctl/examples/my-values.yaml example adctl/examples
+```
+
+uninstall:
+
+```
+adctl uninstall example --clean-instance
+```
+## Usage
 ### adctl nstall
 This command can render all yaml files of an application, and then deploy it to docker
 
@@ -42,12 +60,8 @@ example-chart
 ├── Chart.yaml
 ├── templates
 │   ├── 01-app-mysql.yaml.gtpl
-│   ├── 02-job-init-databases.yaml.gtpl
-│   ├── 03-app-register-center.yaml.gtpl
 │   ├── NOTES.txt
 │   └── config
-│       ├── init-databases
-│       │   └── config.env.gtpl
 │       └── mysql
 │           └── config.gtpl
 └── values.yaml
