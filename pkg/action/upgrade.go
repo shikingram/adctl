@@ -13,6 +13,7 @@ import (
 type Upgrade struct {
 	cfg         *Configuration
 	ReleaseName string
+	Force       bool
 }
 
 func NewUpgrade(cfg *Configuration) *Upgrade {
@@ -53,7 +54,7 @@ func (i *Upgrade) RunWithContext(ctx context.Context, ch *chart.Chart, vals char
 	if err != nil {
 		return err
 	}
-	return deploy.UpgradeWithContext(ctx, i.ReleaseName)
+	return deploy.UpgradeWithContext(ctx, i.ReleaseName,i.Force)
 }
 
 func (i *Upgrade) ValidateName(name string) bool {

@@ -76,6 +76,7 @@ func Execute() {
 		newInstallCmd(actionConfig),
 		newUpgradeCmd(actionConfig),
 		newUnInstallCmd(actionConfig),
+		newListCmd(actionConfig),
 	)
 
 	err := rootCmd.Execute()

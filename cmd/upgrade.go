@@ -62,6 +62,7 @@ func newUpgradeCmd(cfg *action.Configuration) *cobra.Command {
 
 func addUpgradeFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Upgrade, valueOpts *values.Options) {
 	// f.BoolVar(&client.UseReleaseName, "release-name", false, "use release name in the output-dir path.")
+	f.BoolVar(&client.Force, "force", false, "force resource updates through a replacement strategy")
 	addValueOptionsFlags(f, valueOpts)
 }
 

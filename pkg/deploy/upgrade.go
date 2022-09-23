@@ -19,7 +19,7 @@ func Upgrade(name string) error {
 
 var upgradeRegex = regexp.MustCompile(`^\d+-app-.*$`)
 
-func UpgradeWithContext(ctx context.Context, name string) error {
+func UpgradeWithContext(ctx context.Context, name string, force bool) error {
 	files, err := loader.LoadDir(filepath.Join("instance", name))
 	if err != nil {
 		return err
@@ -38,7 +38,16 @@ func UpgradeWithContext(ctx context.Context, name string) error {
 		default:
 			if upgradeRegex.MatchString(fi.Name[strings.LastIndex(fi.Name, string(os.PathSeparator))+1:]) {
 				fmt.Printf("match file: %s \n", fi.Name)
-				return Start(fi.Name, name)
+
+				var err error
+				if force {
+					err = Restart(fi.Name, name)
+				} else {
+					err = Start(fi.Name, name)
+				}
+				if err != nil {
+					return err
+				}
 			}
 		}
 	}

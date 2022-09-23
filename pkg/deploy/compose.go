@@ -12,7 +12,8 @@ import (
 func Start(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
-	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p ad-%s-%s up -d --remove-orphans", file, name, pname)).Stdout()
+	pname = "ad-" + name + "-" + pname
+	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p %s up -d --remove-orphans", file, pname)).Stdout()
 	return err
 }
 
@@ -26,7 +27,16 @@ func Stop(file string) error {
 func Down(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
-	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p ad-%s-%s down --remove-orphans", file, name, pname)).Stdout()
+	pname = "ad-" + name + "-" + pname
+	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p %s down --remove-orphans", file, pname)).Stdout()
+	return err
+}
+
+func Restart(file, name string) error {
+	basefile := filepath.Base(file)
+	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
+	pname = "ad-" + name + "-" + pname
+	_, err := script.Exec(fmt.Sprintf("docker-compose -f %s -p %s up -d --remove-orphans && docker-compose -f %s -p %s restart", file, pname, file, pname)).Stdout()
 	return err
 }
 
@@ -37,4 +47,13 @@ func CheckReleaseDeploy(name string) (int, error) {
 		Exec(`uniq`).
 		Match(name).
 		CountLines()
+}
+
+func ListRelease() error {
+	_, err := script.Exec(`docker ps --filter "label=com.docker.compose.project" -q`).
+		Exec(`xargs docker inspect --format='{{index .Config.Labels "com.docker.compose.project"}}'`).
+		Exec(`sort`).
+		Exec(`uniq`).
+		Stdout()
+	return err
 }
