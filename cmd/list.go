@@ -32,7 +32,7 @@ func newListCmd(cfg *action.Configuration) *cobra.Command {
 	// cmd represents the list command
 	var cmd = &cobra.Command{
 		Use:     "list",
-		Short:   "list releases",
+		Short:   "list application",
 		Args:    require.NoArgs,
 		Long:    `This command lists all of the releases`,
 		Aliases: []string{"ls"},
