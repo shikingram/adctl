@@ -1,0 +1,28 @@
+global:
+  IDG_VERSION: "0.0.40"
+  IDG_SITEUID: cust
+
+mysql:
+  enabled: false
+  config: |-
+   [mysqld]
+   max_allowed_packet = 157286400
+   log_bin=BIN.LOG
+   expire_logs_days=30
+   server-id=1
+   sql_mode=NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+  volumes:
+    - ./config/mysql/config-file.cnf:/etc/mysql/conf.d/config-file.cnf
+  storage:
+    mysql_config: ./storage/app/mysql
+  export_port: []
+  image: mysql
+  MYSQL_ROOT_PASSWORD: "kingram@163"
+  tag: 5.7.22
+  adminer:
+    enabled: true
+    image: adminer
+    tag: latest
+    export_port: 
+      - port: 8080
+        node_port: 8080

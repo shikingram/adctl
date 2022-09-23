@@ -1,0 +1,6 @@
+mysql:
+ enabled: true
+ adminer:
+   export_port:
+   - port: 8080
+     node_port: 8001

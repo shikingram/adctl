@@ -1,0 +1,4 @@
+apiVersion: v1
+name: example
+description: This is a example application
+version: "v0.1.0"
