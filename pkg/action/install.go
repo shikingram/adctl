@@ -11,7 +11,10 @@ import (
 
 	"github.com/shikingram/adctl/pkg/chart"
 	"github.com/shikingram/adctl/pkg/chartutil"
+	"github.com/shikingram/adctl/pkg/cli"
 	"github.com/shikingram/adctl/pkg/deploy"
+	"github.com/shikingram/adctl/pkg/downloader"
+	"github.com/shikingram/adctl/pkg/getter"
 
 	"github.com/pkg/errors"
 )
@@ -21,12 +24,21 @@ const defaultDirectoryPermission = 0755
 type Install struct {
 	cfg *Configuration
 
+	ChartPathOptions
+
 	ReleaseName    string
 	GenerateName   bool
 	NameTemplate   string
 	DryRun         bool
 	Force          bool
 	UseReleaseName bool
+}
+
+type ChartPathOptions struct {
+	Version  string // --version
+	RepoURL  string // --repo
+	Username string // --username
+	Password string // --password
 }
 
 func NewInstall(cfg *Configuration) *Install {
@@ -142,4 +154,46 @@ func (i *Install) RunWithContext(ctx context.Context, ch *chart.Chart, vals char
 func (i *Install) ValidateName(name string) bool {
 	num, err := deploy.CheckReleaseDeploy(name)
 	return err == nil && num > 0
+}
+
+// LocateChart returns a filename of tgz
+func (c *ChartPathOptions) LocateChart(name string, settings *cli.EnvSettings) (string, error) {
+	name = strings.TrimSpace(name)
+	version := strings.TrimSpace(c.Version)
+
+	if _, err := os.Stat(name); err == nil {
+		abs, err := filepath.Abs(name)
+		if err != nil {
+			return abs, err
+		}
+
+		return abs, nil
+	}
+
+	if filepath.IsAbs(name) || strings.HasPrefix(name, ".") {
+		return name, errors.Errorf("path %q not found", name)
+	}
+
+	dl := downloader.ChartDownloader{
+		Getters:          getter.All(settings),
+		RepositoryConfig: settings.RepositoryConfig,
+		RepositoryCache:  settings.RepositoryCache,
+	}
+	dl.Options = append(dl.Options, getter.WithBasicAuth(c.Username, c.Password))
+
+	if err := os.MkdirAll(settings.RepositoryCache, 0755); err != nil {
+		return "", err
+	}
+
+	filename, err := dl.DownloadTo(name, version, settings.RepositoryCache)
+	if err == nil {
+		lname, err := filepath.Abs(filename)
+		if err != nil {
+			return filename, err
+		}
+		return lname, nil
+	}
+
+	return "", err
+
 }

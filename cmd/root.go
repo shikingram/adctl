@@ -26,6 +26,7 @@ import (
 	"os"
 
 	"github.com/shikingram/adctl/pkg/action"
+	"github.com/shikingram/adctl/pkg/cli"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -73,6 +74,7 @@ func Execute() {
 	actionConfig := new(action.Configuration)
 
 	rootCmd.AddCommand(
+		newRepoCmd(),
 		newInstallCmd(actionConfig),
 		newUpgradeCmd(actionConfig),
 		newUnInstallCmd(actionConfig),
@@ -85,6 +87,8 @@ func Execute() {
 		os.Exit(1)
 	}
 }
+
+var settings = cli.New()
 
 func warning(format string, v ...interface{}) {
 	format = fmt.Sprintf("WARNING: %s\n", format)

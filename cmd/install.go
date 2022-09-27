@@ -67,10 +67,11 @@ func addInstallFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Instal
 	f.BoolVar(&client.Force, "force", false, "force install")
 	// f.BoolVarP(&client.GenerateName, "generate-name", "g", false, "generate the name (and omit the NAME parameter)")
 	addValueOptionsFlags(f, valueOpts)
+	addChartPathOptionsFlags(f, &client.ChartPathOptions)
 }
 
 func runInstall(args []string, client *action.Install, valueOpts *values.Options) error {
-	name, cp, err := client.NameAndChart(args)
+	name, chart, err := client.NameAndChart(args)
 	if err != nil {
 		return err
 	}
@@ -86,7 +87,13 @@ func runInstall(args []string, client *action.Install, valueOpts *values.Options
 		return fmt.Errorf("chart %s has already installed", name)
 	}
 
-	charts, err := loader.LoadChart(cp)
+	// locate chart
+	cp, err := client.ChartPathOptions.LocateChart(chart, settings)
+	if err != nil {
+		return err
+	}
+
+	charts, err := loader.Load(cp)
 	if err != nil {
 		return err
 	}
