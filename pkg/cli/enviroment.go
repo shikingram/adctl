@@ -3,20 +3,25 @@ package cli
 import (
 	"os"
 
-	"github.com/spf13/pflag"
+	"github.com/shikingram/adctl/pkg/adctlpath"
 )
 
 type EnvSettings struct {
-	namespace string
+	RepositoryCache  string
+	RepositoryConfig string
 }
 
 func New() *EnvSettings {
 	env := &EnvSettings{
-		namespace: os.Getenv("HELM_NAMESPACE"),
+		RepositoryConfig: envOr("ADCTL_REPOSITORY_CONFIG", adctlpath.ConfigPath("repositories.yaml")),
+		RepositoryCache:  envOr("ADCTL_REPOSITORY_CACHE", adctlpath.CachePath("repository")),
 	}
 	return env
 }
 
-func (s *EnvSettings) AddFlags(fs *pflag.FlagSet) {
-	fs.StringVarP(&s.namespace, "namespace", "n", s.namespace, "namespace scope for this request")
+func envOr(name, def string) string {
+	if v, ok := os.LookupEnv(name); ok {
+		return v
+	}
+	return def
 }

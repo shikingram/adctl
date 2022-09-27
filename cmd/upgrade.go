@@ -67,7 +67,7 @@ func addUpgradeFlags(cmd *cobra.Command, f *pflag.FlagSet, client *action.Upgrad
 }
 
 func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options) error {
-	name, cp, err := client.NameAndChart(args)
+	name, chart, err := client.NameAndChart(args)
 	if err != nil {
 		return err
 	}
@@ -77,13 +77,25 @@ func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options
 		return errors.New("must specify already deployed name")
 	}
 
+	// validate current directory
+	_, err = os.Stat("instance")
+	if err != nil && !client.Force {
+		return errors.New("instance does not exist in the current directory")
+	}
+
 	client.ReleaseName = name
 	vals, err := valueOpts.MergeValues()
 	if err != nil {
 		return err
 	}
 
-	charts, err := loader.LoadChart(cp)
+	// locate chart
+	cp, err := client.ChartPathOptions.LocateChart(chart, settings)
+	if err != nil {
+		return err
+	}
+
+	charts, err := loader.Load(cp)
 	if err != nil {
 		return err
 	}

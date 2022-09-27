@@ -4,11 +4,11 @@ BIN_FILE=adctl
 all: check build
 
 build: 
-	@go build -o "${BIN_FILE}" 
+	go build -o ${BIN_FILE}
 
 
 run: build
-	./"${BIN_FILE}"
+	./${BIN_FILE}
 
 check:
-	@go mod tidy
+	go mod tidy

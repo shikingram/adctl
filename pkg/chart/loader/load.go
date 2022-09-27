@@ -1,7 +1,9 @@
 package loader
 
 import (
+	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -42,14 +44,33 @@ func LoadDir(path string) ([]*BufferedFile, error) {
 	return files, nil
 }
 
-// LoadChart load chart from local path
-func LoadChart(path string) (*chart.Chart, error) {
+type ChartLoader interface {
+	Load() (*chart.Chart, error)
+}
+
+func Load(name string) (*chart.Chart, error) {
+	l, err := Loader(name)
+	if err != nil {
+		return nil, err
+	}
+	return l.Load()
+}
+
+func Loader(name string) (ChartLoader, error) {
+	fi, err := os.Stat(name)
+	if err != nil {
+		return nil, err
+	}
+	if fi.IsDir() {
+		return DirLoader(name), nil
+	}
+	return FileLoader(name), nil
+
+}
+
+func LoadFiles(files []*BufferedFile) (*chart.Chart, error) {
 	c := new(chart.Chart)
 
-	files, err := LoadDir(path)
-	if err != nil {
-		return c, err
-	}
 	for _, f := range files {
 		c.Raw = append(c.Raw, &chart.File{Name: f.Name, Data: f.Data})
 		if strings.Contains(f.Name, "Chart.yaml") {
@@ -59,6 +80,8 @@ func LoadChart(path string) (*chart.Chart, error) {
 			if err := yaml.Unmarshal(f.Data, c.Metadata); err != nil {
 				return c, errors.Wrap(err, "cannot load Chart.yaml")
 			}
+			fmt.Println(">>>>>>>>>>")
+			fmt.Println("version:", c.Metadata.Version)
 		}
 	}
 

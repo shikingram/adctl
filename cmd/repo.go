@@ -23,22 +23,27 @@ package cmd
 
 import (
 	"github.com/shikingram/adctl/cmd/require"
-	"github.com/shikingram/adctl/pkg/action"
-	"github.com/shikingram/adctl/pkg/deploy"
 	"github.com/spf13/cobra"
 )
 
-func newListCmd(cfg *action.Configuration) *cobra.Command {
-	// cmd represents the list command
+var repoLong = `
+This command consists of multiple subcommands to interact with chart repositories.
+
+It can be used to add, remove, list, and index chart repositories.
+`
+
+func newRepoCmd() *cobra.Command {
+	// cmd represents the repo command
 	var cmd = &cobra.Command{
-		Use:     "list [NAME]",
-		Short:   "list application",
-		Args:    require.NoArgs,
-		Long:    `This command lists all of the releases`,
-		Aliases: []string{"ls"},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return deploy.ListRelease(args[0])
-		},
+		Use:   "repo add|remove|list|index|update [ARGS]",
+		Short: "add, list, remove, update, and index chart repositories",
+		Long:  repoLong,
+		Args:  require.NoArgs,
 	}
+
+	cmd.AddCommand(newRepoAddCmd())
+	cmd.AddCommand(newRepoRemoveCmd())
+	cmd.AddCommand(newRepoUpdateCmd())
+	cmd.AddCommand(newRepoListCmd())
 	return cmd
 }

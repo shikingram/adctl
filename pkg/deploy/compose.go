@@ -72,14 +72,18 @@ func CheckReleaseDeploy(name string) (int, error) {
 
 }
 
-func ListRelease() error {
+func ListRelease(name string) error {
 
 	if l, err := script.Exec(ps).CountLines(); err == nil && l > 0 {
-		_, e := script.Exec(ps).
-			Exec(inspect).
-			Exec(`sort`).
-			Exec(`uniq`).
-			Stdout()
+
+		pipe := script.Exec(ps).Exec(inspect).Exec(`sort`).Exec(`uniq`)
+
+		var e error
+		if len(name) > 0 {
+			_, e = pipe.Match(name).Stdout()
+		} else {
+			_, e = pipe.Stdout()
+		}
 		if e != nil {
 			return e
 		}

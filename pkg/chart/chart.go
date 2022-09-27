@@ -13,6 +13,8 @@ type Chart struct {
 	Files []*File `json:"files"`
 }
 
+const APIVersionV1 = "v1"
+
 // Name returns the name of the chart.
 func (ch *Chart) Name() string {
 	if ch.Metadata == nil {
