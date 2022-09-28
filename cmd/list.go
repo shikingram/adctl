@@ -22,7 +22,6 @@ THE SOFTWARE.
 package cmd
 
 import (
-	"github.com/shikingram/adctl/cmd/require"
 	"github.com/shikingram/adctl/pkg/action"
 	"github.com/shikingram/adctl/pkg/deploy"
 	"github.com/spf13/cobra"
@@ -33,11 +32,14 @@ func newListCmd(cfg *action.Configuration) *cobra.Command {
 	var cmd = &cobra.Command{
 		Use:     "list [NAME]",
 		Short:   "list application",
-		Args:    require.NoArgs,
 		Long:    `This command lists all of the releases`,
 		Aliases: []string{"ls"},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return deploy.ListRelease(args[0])
+			name := ""
+			if len(args) > 0 {
+				name = args[0]
+			}
+			return deploy.ListRelease(name)
 		},
 	}
 	return cmd

@@ -9,23 +9,27 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/shikingram/adctl/pkg/chart"
 	"github.com/shikingram/adctl/pkg/chart/loader"
 )
 
-func Upgrade(name string) error {
+func Upgrade(name string, ch *chart.Chart) error {
 	ctx := context.Background()
-	return InstallWithContext(ctx, name)
+	return UpgradeWithContext(ctx, ch, name, false)
 }
 
 var upgradeRegex = regexp.MustCompile(`^\d+-app-.*$`)
 
-func UpgradeWithContext(ctx context.Context, name string, force bool) error {
-	files, err := loader.LoadDir(filepath.Join("instance", name))
+func UpgradeWithContext(ctx context.Context, ch *chart.Chart, name string, force bool) error {
+	files, err := loader.LoadDir(filepath.Join("instance", name, ch.Metadata.Name))
 	if err != nil {
 		return err
 	}
 
-	// TODO: validate
+	err = validateFiles(name, files, ch)
+	if err != nil {
+		return err
+	}
 
 	if err := CreateNetWork(name); err != nil {
 		return err

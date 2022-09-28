@@ -57,7 +57,7 @@ func (i *Upgrade) RunWithContext(ctx context.Context, ch *chart.Chart, vals char
 	if err != nil {
 		return err
 	}
-	return deploy.UpgradeWithContext(ctx, i.ReleaseName, i.Force)
+	return deploy.UpgradeWithContext(ctx, ch, i.ReleaseName, i.Force)
 }
 
 func (i *Upgrade) ValidateName(name string) bool {
