@@ -148,7 +148,7 @@ func (i *Install) RunWithContext(ctx context.Context, ch *chart.Chart, vals char
 		return nil
 	}
 
-	return deploy.InstallWithContext(ctx, i.ReleaseName)
+	return deploy.InstallWithContext(ctx, ch, i.ReleaseName)
 }
 
 func (i *Install) ValidateName(name string) bool {

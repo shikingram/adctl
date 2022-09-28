@@ -1,7 +1,6 @@
 package loader
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -80,8 +79,6 @@ func LoadFiles(files []*BufferedFile) (*chart.Chart, error) {
 			if err := yaml.Unmarshal(f.Data, c.Metadata); err != nil {
 				return c, errors.Wrap(err, "cannot load Chart.yaml")
 			}
-			fmt.Println(">>>>>>>>>>")
-			fmt.Println("version:", c.Metadata.Version)
 		}
 	}
 
