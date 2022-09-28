@@ -68,11 +68,12 @@ func printNotes(fis []*loader.BufferedFile) {
 }
 
 func validateFiles(releaseName string, files []*loader.BufferedFile, ch *chart.Chart) error {
-	for _, fi := range files {
+	for idx, fi := range files {
 		basename := filepath.Base(fi.Name)
 		if nameRegex.MatchString(basename) {
 			if !infiles(basename, ch.Templates) {
 				Down(fi.Name, releaseName)
+				files = append(files[:idx], files[idx+1:]...)
 				os.RemoveAll(fi.Name)
 			}
 		}
@@ -82,7 +83,7 @@ func validateFiles(releaseName string, files []*loader.BufferedFile, ch *chart.C
 
 func infiles(file string, ts []*chart.File) bool {
 	for _, t := range ts {
-		if strings.Contains(filepath.Base(t.Name), file) {
+		if strings.HasPrefix(filepath.Base(t.Name), file) {
 			return true
 		}
 	}

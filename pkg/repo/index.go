@@ -142,12 +142,13 @@ func loadIndex(data []byte, source string) (*IndexFile, error) {
 	for name, cvs := range i.Entries {
 		for idx := len(cvs) - 1; idx >= 0; idx-- {
 
-			if !validateAnnotations(cvs[idx].Annotations) {
-				continue
-			}
-
 			if cvs[idx].APIVersion == "" {
 				cvs[idx].APIVersion = chart.APIVersionV1
+			}
+
+			if !validateAnnotations(cvs[idx].Annotations) {
+				delete(i.Entries, name)
+				break
 			}
 
 			if err := cvs[idx].Validate(); err != nil {

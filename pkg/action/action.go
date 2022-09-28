@@ -25,6 +25,13 @@ func (cfg *Configuration) renderResources(ch *chart.Chart, values chartutil.Valu
 	}
 	files[filepath.Join(ch.ChartPath(), "values.yaml")] = string(content)
 
+	// add Chart.yaml to target directory
+	chartcontent, err := yaml.Marshal(ch.Metadata)
+	if err != nil {
+		return err
+	}
+	files[filepath.Join(ch.ChartPath(), "Chart.yaml")] = string(chartcontent)
+
 	fileWritten := make(map[string]bool)
 	for name, content := range files {
 		newDir := filepath.Join("instance", releaseName)
