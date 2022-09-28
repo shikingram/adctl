@@ -12,6 +12,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/shikingram/adctl/pkg/adctlpath"
 	"github.com/shikingram/adctl/pkg/getter"
+	"sigs.k8s.io/yaml"
 )
 
 // Entry represents a collection of parameters for chart repository
@@ -93,5 +94,9 @@ func (r *ChartRepository) DownloadIndexFile() (string, error) {
 	// Create the index file in the cache directory
 	fname := filepath.Join(r.CachePath, adctlpath.CacheIndexFile(r.Config.Name))
 	os.MkdirAll(filepath.Dir(fname), 0755)
+	index, err = yaml.Marshal(indexFile)
+	if err != nil {
+		return "", err
+	}
 	return fname, ioutil.WriteFile(fname, index, 0644)
 }
