@@ -23,7 +23,7 @@ var nameRegex = regexp.MustCompile(`^\d+-(app|job)-.*$`)
 const notesFileSuffix = "NOTES.txt"
 
 func InstallWithContext(ctx context.Context, ch *chart.Chart, name string) error {
-	files, err := loader.LoadDir(filepath.Join("instance", name))
+	files, err := loader.LoadDir(filepath.Join("instance", name, ch.Metadata.Name))
 	if err != nil {
 		return err
 	}
@@ -62,7 +62,7 @@ func InstallWithContext(ctx context.Context, ch *chart.Chart, name string) error
 func printNotes(fis []*loader.BufferedFile) {
 	for _, fi := range fis {
 		if strings.Contains(fi.Name, notesFileSuffix) {
-			fmt.Printf("\n %s: \n \n %s \n", notesFileSuffix, string(fi.Data))
+			fmt.Printf("\n %s: \n %s \n", notesFileSuffix, string(fi.Data))
 		}
 	}
 }
@@ -82,7 +82,7 @@ func validateFiles(releaseName string, files []*loader.BufferedFile, ch *chart.C
 
 func infiles(file string, ts []*chart.File) bool {
 	for _, t := range ts {
-		if file == filepath.Base(t.Name) {
+		if strings.Contains(filepath.Base(t.Name), file) {
 			return true
 		}
 	}

@@ -21,7 +21,7 @@ func Upgrade(name string, ch *chart.Chart) error {
 var upgradeRegex = regexp.MustCompile(`^\d+-app-.*$`)
 
 func UpgradeWithContext(ctx context.Context, ch *chart.Chart, name string, force bool) error {
-	files, err := loader.LoadDir(filepath.Join("instance", name))
+	files, err := loader.LoadDir(filepath.Join("instance", name, ch.Metadata.Name))
 	if err != nil {
 		return err
 	}

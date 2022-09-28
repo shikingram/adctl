@@ -25,8 +25,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 
 	"github.com/shikingram/adctl/cmd/require"
@@ -79,7 +81,7 @@ func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options
 
 	// validate current directory
 	_, err = os.Stat("instance")
-	if err != nil && !client.Force {
+	if err != nil {
 		return errors.New("instance does not exist in the current directory")
 	}
 
@@ -100,6 +102,11 @@ func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options
 		return err
 	}
 
+	// validate chart name
+	if !validateChartName(name, charts.Metadata.Name) {
+		return errors.New("must specify already deployed chart name")
+	}
+
 	// Create context and prepare the handle of SIGTERM
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -114,4 +121,16 @@ func runUpgrade(args []string, client *action.Upgrade, valueOpts *values.Options
 	}()
 
 	return client.RunWithContext(ctx, charts, vals)
+}
+
+func validateChartName(name, cname string) bool {
+	fis, err := ioutil.ReadDir(filepath.Join("instance", name))
+	if err == nil {
+		for _, fi := range fis {
+			if fi.Name() == cname {
+				return true
+			}
+		}
+	}
+	return false
 }
