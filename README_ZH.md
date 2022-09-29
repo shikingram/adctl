@@ -26,21 +26,25 @@ mv ./__LINUX_ADCTL_AMD64__/adctl /usr/bin
 ```
 ## ⚙️ 示例
 ### 先决条件
-`adctl`依赖于docker和docker-compose，所以你的环境中必须包含docker和docker compose，且版本最低要求如下：
+`adctl`依赖于docker和docker-compose，所以你的环境中必须包含[docker](https://github.com/docker/compose/tree/v2#linux)插件，且版本最低要求如下：
+
 ```
 $docker --version 
 Docker version 20.10.11, build dea9396
-
-$docker-compose --version  
-docker-compose version 1.29.2, build 5becea4c
 ```
+
+docker 安装地址：[where-to-get-docker](https://github.com/docker/compose/tree/v2#where-to-get-docker-compose)
+
 本仓库代码中包含了[示例应用程序](examples/templates/01-app-mysql.yaml.gtpl)chart包，它是一个`mysql`的`docker compose`模板包括`adminer`管理工具，并且提供了配置好的参数可以设置。
 
 首先我们克隆本仓库代码到本地环境
 ```
 git clone https://github.com/shikingram/adctl.git
 ```
-### 安装chart包
+
+**使用repo**：和helm类似，我们可以使用`adctl repo add`添加仓库到本地环境中，然后使用`仓库名/包名`指定安装，adctl会自动下载解压并进行安装
+
+### 安装
 
 使用`adctl install`命令安装该chart包
 ```
@@ -48,7 +52,7 @@ adctl install -f adctl/examples/my-values.yaml example adctl/examples
 ```
 我们在[自定义的参数](examples/my-values.yaml)中配置映射了本机的8001端口映射，所以打开`127.0.0.1:8001`就可以使用这个`mysql`数据库了
 
-### 卸载chart包
+### 卸载
 
 执行下面命令可以卸载该应用，`--clean-instance`会删除当前应用实例的本地存储数据。
 ```
@@ -85,6 +89,7 @@ example-chart
 ```
 `adctl`对模板的文件名称进行了限制
 - 必须使用`数字-app|job-服务名`的格式
+- 数字会进行排序，按顺序执行部署
 - job类型的服务只会在install时执行一次,upgrade时不会执行
 
 ### 本地运行数据
