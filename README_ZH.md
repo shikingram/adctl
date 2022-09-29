@@ -42,7 +42,7 @@ docker 安装地址：[where-to-get-docker](https://github.com/docker/compose/tr
 git clone https://github.com/shikingram/adctl.git
 ```
 
-**使用repo**：和helm类似，我们可以使用`adctl repo add`添加仓库到本地环境中，然后使用`仓库名/包名`指定安装，adctl会自动下载解压并进行安装
+**使用repo**：和helm类似，我们可以使用`adctl repo add`添加仓库到本地环境中，然后使用`仓库名/包名`指定安装，同时提供`list remove update`等命令
 
 ### 安装
 
