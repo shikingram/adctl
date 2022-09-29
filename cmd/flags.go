@@ -25,8 +25,8 @@ func addValueOptionsFlags(f *pflag.FlagSet, v *values.Options) {
 
 func addChartPathOptionsFlags(f *pflag.FlagSet, c *action.ChartPathOptions) {
 	f.StringVar(&c.Version, "version", "", "specify a version constraint for the chart version to use. This constraint can be a specific tag (e.g. 1.1.1) or it may reference a valid range (e.g. ^2.0.0). If this is not specified, the latest version is used")
-	f.StringVar(&c.Username, "username", "", "chart repository username where to locate the requested chart")
-	f.StringVar(&c.Password, "password", "", "chart repository password where to locate the requested chart")
+	// f.StringVar(&c.Username, "username", "", "chart repository username where to locate the requested chart")
+	// f.StringVar(&c.Password, "password", "", "chart repository password where to locate the requested chart")
 }
 
 func bindOutputFlag(cmd *cobra.Command, varRef *output.Format) {

@@ -8,14 +8,13 @@ import (
 	"github.com/bitfield/script"
 )
 
-const ps = `docker ps --filter "label=com.docker.compose.project" -q`
-const inspect = `xargs docker inspect --format='{{index .Config.Labels "com.docker.compose.project"}}'`
+const dprefix = `ad-`
 
 // start docker-compose
 func Start(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
-	pname = "ad-" + name + "-" + pname
+	pname = dprefix + name + "-" + pname
 	cmd := fmt.Sprintf("docker compose -f %s -p %s up -d --remove-orphans", file, pname)
 	return exec(cmd)
 }
@@ -36,7 +35,7 @@ func Stop(file string) error {
 func Down(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
-	pname = "ad-" + name + "-" + pname
+	pname = dprefix + name + "-" + pname
 	cmd := fmt.Sprintf("docker compose -f %s -p %s down --remove-orphans", file, pname)
 	return exec(cmd)
 }
@@ -44,7 +43,7 @@ func Down(file, name string) error {
 func Restart(file, name string) error {
 	basefile := filepath.Base(file)
 	pname := basefile[7:strings.LastIndex(basefile, ".yaml")]
-	pname = "ad-" + name + "-" + pname
+	pname = dprefix + name + "-" + pname
 	cmd1 := fmt.Sprintf("docker compose -f %s -p %s up -d --remove-orphans", file, pname)
 
 	cmd2 := fmt.Sprintf("docker compose -f %s -p %s restart", file, pname)
@@ -58,36 +57,18 @@ func Restart(file, name string) error {
 }
 
 func CheckReleaseDeploy(name string) (int, error) {
-
-	if l, err := script.Exec(ps).CountLines(); err == nil && l > 0 {
-		return script.Exec(ps).
-			Exec(inspect).
-			Exec(`sort`).
-			Exec(`uniq`).
-			Match(name).
-			CountLines()
-	}
-
-	return 0, nil
-
+	return script.Exec(`docker compose ls`).Match(dprefix).Match(name).CountLines()
 }
 
 func ListRelease(name string) error {
 
-	if l, err := script.Exec(ps).CountLines(); err == nil && l > 0 {
+	pipe := script.Exec(`docker compose ls`)
 
-		pipe := script.Exec(ps).Exec(inspect).Exec(`sort`).Exec(`uniq`)
-
-		var e error
-		if len(name) > 0 {
-			_, e = pipe.Match(name).Stdout()
-		} else {
-			_, e = pipe.Stdout()
-		}
-		if e != nil {
-			return e
-		}
+	var e error
+	if len(name) > 0 {
+		_, e = pipe.Match(dprefix).Match(name).Stdout()
+	} else {
+		_, e = pipe.Match(dprefix).Stdout()
 	}
-
-	return nil
+	return e
 }
