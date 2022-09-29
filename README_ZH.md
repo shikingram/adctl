@@ -41,11 +41,6 @@ docker 安装地址：[where-to-get-docker](https://github.com/docker/compose/tr
 ```
 git clone https://github.com/shikingram/adctl.git
 ```
-
-**使用repo**：
-
-和helm类似，我们可以使用`adctl repo add`添加仓库到本地环境中，然后使用`仓库名/包名`指定安装，同时提供`list remove update`等命令
-
 ### 安装
 
 使用`adctl install`命令安装该chart包
@@ -63,6 +58,9 @@ adctl uninstall example --clean-instance
 
 ## 📢 备注
 ### 使用repo命令
+
+和helm类似，我们可以使用`adctl repo add`添加仓库到本地环境中，然后使用`仓库名/包名`指定安装，同时提供`list remove update`等命令
+
 为了和kubernetes仓库区分开，adctl的chart包`Chart.yaml`中需要包含下面**annotations**指定类型，不包含该注释的chart包不会被加载repo中
 ```
 apiVersion: v2
